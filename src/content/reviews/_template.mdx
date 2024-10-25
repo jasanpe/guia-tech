@@ -1,0 +1,146 @@
+---
+title: "NOMBRE DEL PRODUCTO - Review y Análisis [2024]"
+description: "✓ Análisis en profundidad del PRODUCTO ▷ Te contamos nuestra experiencia tras X meses de uso, rendimiento, características principales y si vale la pena el precio de PRECIO€."
+date: "2024-XX-XX"
+author: "Guía Tech"
+category: "CATEGORÍA"
+brand: "MARCA"
+model: "MODELO"
+price: PRECIO
+rating: X.X
+pros: [
+  "Punto fuerte 1",
+  "Punto fuerte 2",
+  "Punto fuerte 3",
+  "Punto fuerte 4",
+  "Punto fuerte 5"
+]
+cons: [
+  "Punto débil 1",
+  "Punto débil 2",
+  "Punto débil 3"
+]
+affiliate_links: {
+  amazon: "ID-PRODUCTO-AMAZON",
+  mediamarkt: "ID-PRODUCTO-MEDIAMARKT",
+  pccomponentes: "ID-PRODUCTO-PCC"
+}
+schema: {
+  "@type": "Product",
+  "name": "NOMBRE PRODUCTO",
+  "brand": "MARCA",
+  "model": "MODELO",
+  "releaseDate": "YYYY-MM-DD"
+}
+---
+
+import PriceAnalytics from '@/components/PriceAnalytics'
+import ProductCard from '@/components/ProductCard'
+import AffiliateDisclosure from '@/components/AffiliateDisclosure'
+import { Alert } from '@/components/ui/alert'
+
+<AffiliateDisclosure />
+
+## 💡 Conclusión Rápida
+
+[Resumen de 2-3 párrafos con la conclusión principal del análisis]
+
+<Alert>
+  <strong>🔥 Oferta Actual:</strong> [Si hay alguna oferta relevante]
+</Alert>
+
+<div className="grid gap-6 my-8">
+  <ProductCard
+    title="[PRODUCTO] CONFIGURACIÓN"
+    description="[DESCRIPCIÓN CORTA]"
+    price={PRECIO}
+    rating={RATING}
+    store="Amazon"
+    id="ID-TRACKING"
+  />
+</div>
+
+## 📱 Especificaciones Principales
+
+- **Característica 1:** Valor
+- **Característica 2:** Valor
+- **Característica 3:** Valor
+- **Característica 4:** Valor
+- **Característica 5:** Valor
+
+## 🔍 Análisis Detallado
+
+### [Aspecto 1]
+[Análisis detallado con datos concretos y experiencia de uso]
+
+### [Aspecto 2]
+[Análisis detallado con datos concretos y experiencia de uso]
+
+### [Aspecto 3]
+[Análisis detallado con datos concretos y experiencia de uso]
+
+## 💰 Análisis de Precio
+
+<PriceAnalytics productId="ID-PRODUCTO" />
+
+## 🤔 ¿Para quién es este producto?
+
+**Recomendado para:**
+- [Tipo de usuario 1]
+- [Tipo de usuario 2]
+- [Tipo de usuario 3]
+
+**No recomendado para:**
+- [Tipo de usuario 1]
+- [Tipo de usuario 2]
+
+## 📊 Comparativa Rápida
+
+| Característica | [Este Producto] | [Competidor 1] | [Competidor 2] |
+|----------------|-----------------|----------------|----------------|
+| [Caract. 1]    | Valor          | Valor          | Valor         |
+| [Caract. 2]    | Valor          | Valor          | Valor         |
+| [Caract. 3]    | Valor          | Valor          | Valor         |
+
+## ❓ Preguntas Frecuentes
+
+<details>
+<summary>[Pregunta 1]</summary>
+[Respuesta detallada]
+</details>
+
+<details>
+<summary>[Pregunta 2]</summary>
+[Respuesta detallada]
+</details>
+
+## 🏆 Veredicto Final
+
+**Puntuación: X.X/10**
+
+[Conclusión final de 2-3 párrafos]
+
+### Desglose de Puntuación
+- Aspecto 1: X.X/10
+- Aspecto 2: X.X/10
+- Aspecto 3: X.X/10
+- Aspecto 4: X.X/10
+- Aspecto 5: X.X/10
+- Precio/Valor: X.X/10
+
+<Alert>
+  <strong>💡 Consejo de Compra:</strong> [Recomendación específica sobre cuándo/dónde comprar]
+</Alert>
+
+<div className="mt-8">
+  <ProductCard
+    title="[PRODUCTO] CONFIGURACIÓN"
+    description="[DESCRIPCIÓN CORTA]"
+    price={PRECIO}
+    rating={RATING}
+    store="Amazon"
+    id="ID-TRACKING-BOTTOM"
+  />
+</div>
+
+export default ({ children }) => <article className="prose max-w-none">{children}</article>
