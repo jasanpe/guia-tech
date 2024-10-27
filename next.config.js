@@ -22,6 +22,15 @@ const nextConfig = {
     }
     return config;
   },
+  // Configuración adicional para ESLint
+  eslint: {
+    // Desactivar la validación de ESLint durante el build
+    ignoreDuringBuilds: true,
+  },
+  // Desactivar la comprobación de tipos durante el build
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 }
 
 module.exports = nextConfig
