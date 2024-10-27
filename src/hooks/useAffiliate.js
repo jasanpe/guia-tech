@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
 import { AffiliateManager } from '../lib/affiliateManager'
 import { useAnalytics } from './useAnalytics'
-import { useAuth } from '../contexts/AuthContext'
-import { useNotification } from '../contexts/NotificationContext'
+import { useAuth } from '../context/AuthContext'
+import { useNotification } from '../context/NotificationContext'
 import { PriceMonitor } from '../lib/priceMonitor'
 
 export function useAffiliate() {

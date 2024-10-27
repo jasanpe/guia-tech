@@ -1,6 +1,12 @@
 import { useState } from 'react'
-import { Bell, Tag, PriceChange, Clock, X } from 'lucide-react'
 import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog'
+import { 
+  Bell, 
+  Clock, 
+  TrendingDown,
+  Tag, 
+  X 
+} from 'lucide-react'
 
 // Mock de notificaciones para demostración
 const MOCK_NOTIFICATIONS = [
@@ -101,7 +107,7 @@ export default function NotificationCenter() {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'price_drop':
-        return <PriceChange className="w-5 h-5 text-green-500" />
+        return <TrendingDown className="w-5 h-5 text-green-500" /> // Changed from PriceChange
       case 'recommendation':
         return <Tag className="w-5 h-5 text-blue-500" />
       case 'alert':

@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react'
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from "@/components/ui/alert-dialog"
 import { Camera } from "lucide-react"
 
-export default function OfferAlert({ isOpen = false, onClose = () => {}, offer }) {
+export function OfferAlert({ isOpen = false, onClose = () => {}, offer }) {
   const [shouldRender, setShouldRender] = useState(false)
   
   useEffect(() => {
@@ -90,3 +98,6 @@ export default function OfferAlert({ isOpen = false, onClose = () => {}, offer }
     </AlertDialog>
   )
 }
+
+// Add default export
+export default OfferAlert

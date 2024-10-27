@@ -1,3 +1,5 @@
+import { getCLS, getFID, getLCP, getFCP, getTTFB } from 'web-vitals'
+
 export class Metrics {
     static sessionStart = Date.now()
   

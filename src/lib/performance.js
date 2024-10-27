@@ -1,3 +1,6 @@
+import { getCLS, getFID, getLCP, getFCP, getTTFB } from 'web-vitals'
+
+
 export class Performance {
     static metrics = {
       FCP: null,  // First Contentful Paint

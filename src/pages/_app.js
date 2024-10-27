@@ -10,8 +10,9 @@ import { PerformanceMonitor } from '../lib/performanceMonitor'
 import { AutoOptimizer } from '../lib/autoOptimizer'
 import { Analytics } from '../lib/analytics'
 import '../styles/globals.css'
-import { AuthProvider } from '../contexts/AuthContext'
-import { NotificationProvider } from '../contexts/NotificationContext'
+import { AuthProvider } from '../context/AuthContext'
+import { NotificationProvider } from '../context/NotificationContext'
+import { TooltipProvider } from '../components/ui/tooltip'
 
 export default function App({ Component, pageProps }) {
   const { trackEvent } = useAnalytics()
@@ -116,10 +117,12 @@ export default function App({ Component, pageProps }) {
     <ErrorBoundary componentName="App">
       <AuthProvider>
         <NotificationProvider>
-          <div className="app-container min-h-screen bg-gray-50">
-            <Component {...pageProps} />
-            <div id="portal-root" />
-          </div>
+          <TooltipProvider>
+            <div className="app-container min-h-screen bg-gray-50">
+              <Component {...pageProps} />
+              <div id="portal-root" />
+            </div>
+          </TooltipProvider>
         </NotificationProvider>
       </AuthProvider>
     </ErrorBoundary>

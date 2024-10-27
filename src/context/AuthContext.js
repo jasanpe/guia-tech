@@ -1,10 +1,25 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 const AuthContext = createContext()
+
+const STORAGE_KEY = 'auth_user'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  // Cargar usuario desde localStorage al iniciar
+  useEffect(() => {
+    const storedUser = localStorage.getItem(STORAGE_KEY)
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser))
+      } catch (error) {
+        console.error('Error parsing stored user:', error)
+      }
+    }
+    setIsLoading(false)
+  }, [])
 
   const login = useCallback(async (email, password) => {
     try {
@@ -14,11 +29,18 @@ export function AuthProvider({ children }) {
         id: '1',
         name: 'Usuario Demo',
         email: email,
-        favorites: []
+        favorites: [],
+        lastLogin: new Date().toISOString(),
+        preferences: {
+          notifications: true,
+          newsletter: true
+        }
       }
       setUser(mockUser)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser))
       return { success: true }
     } catch (error) {
+      console.error('Login error:', error)
       return { success: false, error: error.message }
     } finally {
       setIsLoading(false)
@@ -33,11 +55,18 @@ export function AuthProvider({ children }) {
         id: '1',
         name: name,
         email: email,
-        favorites: []
+        favorites: [],
+        createdAt: new Date().toISOString(),
+        preferences: {
+          notifications: true,
+          newsletter: true
+        }
       }
       setUser(mockUser)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser))
       return { success: true }
     } catch (error) {
+      console.error('Register error:', error)
       return { success: false, error: error.message }
     } finally {
       setIsLoading(false)
@@ -45,6 +74,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const logout = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY)
     setUser(null)
   }, [])
 
@@ -57,10 +87,30 @@ export function AuthProvider({ children }) {
         ? favorites.filter(id => id !== productId)
         : [...favorites, productId]
 
-      return {
+      const updatedUser = {
         ...currentUser,
         favorites: newFavorites
       }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser))
+      return updatedUser
+    })
+  }, [])
+
+  const updateUserPreferences = useCallback((preferences) => {
+    setUser(currentUser => {
+      if (!currentUser) return null
+
+      const updatedUser = {
+        ...currentUser,
+        preferences: {
+          ...currentUser.preferences,
+          ...preferences
+        }
+      }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser))
+      return updatedUser
     })
   }, [])
 
@@ -71,7 +121,8 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
-    toggleFavorite
+    toggleFavorite,
+    updateUserPreferences
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

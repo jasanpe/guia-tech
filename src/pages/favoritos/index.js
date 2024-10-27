@@ -3,24 +3,6 @@ import SEO from '../../components/SEO'
 import ProductCard from '../../components/ProductCard'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import useProtectedRoute from '../../hooks/useProtectedRoute'
-import { useAuth } from '../../contexts/AuthContext'
-
-export default function Profile() {
-    const { isLoading } = useProtectedRoute()
-    const { user } = useAuth()
-  
-    if (isLoading) {
-      return (
-        <Layout>
-          <div className="container mx-auto px-4 py-8">
-            <p className="text-center">Cargando...</p>
-          </div>
-        </Layout>
-      )
-    }
-  
-    // Resto del código existente...
-  }
 
 // Mock de datos de favoritos
 const mockFavorites = [
@@ -44,7 +26,19 @@ const mockFavorites = [
   }
 ]
 
-export default function Favorites() {
+export default function FavoritesPage() {
+  const { isLoading } = useProtectedRoute()
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <p className="text-center">Cargando...</p>
+        </div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       <SEO 

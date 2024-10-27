@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import SearchBar from './SearchBar'
 import NotificationCenter from './NotificationCenter'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function Header() {
   const { user } = useAuth()

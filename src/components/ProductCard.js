@@ -6,7 +6,13 @@ import { PriceAlertDialog } from './PriceAlertDialog'
 import { PriceHistory } from './PriceHistory'
 import { PriceMonitor } from '../lib/priceMonitor'
 import { useAffiliate } from '../hooks/useAffiliate'
-import { useNotification } from '../contexts/NotificationContext'
+import { useNotification } from '../context/NotificationContext'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { 
   TrendingDown, 
   TrendingUp, 
@@ -21,15 +27,10 @@ import {
   Clock,
   LineChart
 } from 'lucide-react'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Badge } from '@/components/ui/badge'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import { Skeleton } from '@/components/ui/skeleton'  // Changed from ../ui/skeleton
+import { Badge } from '@/components/ui/badge'  // Changed from ../ui/badge
 
+// Rest of your component code stays exactly the same...
 export default function ProductCard({
   id,
   title,
@@ -65,7 +66,6 @@ export default function ProductCard({
       try {
         setIsLoading(true)
         
-        // Cargar en paralelo todos los datos necesarios
         const [
           priceAnalytics,
           priceReport,
@@ -82,19 +82,18 @@ export default function ProductCard({
             isSponsored
           })
         ])
-
+  
         setPriceData(priceReport)
         setAffiliateLink(newAffiliateLink)
         setCompetitorPrices(bestPrice ? [bestPrice, ...priceReport?.competitors?.competitors || []] : priceReport?.competitors?.competitors)
-
-        // Iniciar monitoreo si no está activo
+  
         await PriceMonitor.initMonitoring(id, {
           currentPrice: price,
           store,
           title,
           category
         })
-
+  
       } catch (error) {
         console.error('Error loading product data:', error)
         showNotification({
@@ -105,9 +104,9 @@ export default function ProductCard({
         setIsLoading(false)
       }
     }
-
+  
     loadInitialData()
-  }, [id, price, store, title, category, position, isSponsored])
+  }, [id, price, store, title, category, position, isSponsored, generateAffiliateLink, getBestPrice, showNotification])
 
   // Observer para tracking de visibilidad
   useEffect(() => {
@@ -385,6 +384,11 @@ export default function ProductCard({
               Alertas de precio
             </button>
 
+            <button>
+              <Bell className="w-4 h-4" />
+              Alertas de precio
+            </button>
+
             <button
               onClick={() => setShowDetails(!showDetails)}
               className="w-full flex items-center justify-center gap-2 text-gray-600 hover:text-blue-600 text-sm py-2"
@@ -406,7 +410,7 @@ export default function ProductCard({
 
         {showDetails && !isLoading && (
           <div className="space-y-6 pt-4">
-            <ProductMetrics />
+            {ProductMetrics}
             <PriceHistory 
               priceData={priceData} 
               currentPrice={price}

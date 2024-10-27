@@ -1,7 +1,7 @@
 import Layout from '../../components/Layout'
 import ConversionDashboard from '../../components/ConversionDashboard'
 import useProtectedRoute from '../../hooks/useProtectedRoute'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 
 export default function DashboardPage() {
   const { isLoading } = useProtectedRoute()

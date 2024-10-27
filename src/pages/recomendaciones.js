@@ -2,7 +2,7 @@ import Layout from '../components/Layout'
 import SEO from '../components/SEO'
 import Breadcrumbs from '../components/Breadcrumbs'
 import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function RecommendationsPage() {
   const { user } = useAuth()

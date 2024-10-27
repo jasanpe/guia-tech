@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import { Camera, Trending, History, Star } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
+import { 
+  Camera, 
+  History, 
+  Star,
+  TrendingUp // Changed from Trending to TrendingUp
+} from 'lucide-react'
 
 const MOCK_RECOMMENDATIONS = {
   trending: [
@@ -84,7 +89,7 @@ export default function PersonalizedRecommendations() {
   }
 
   const tabs = [
-    { id: 'trending', name: 'Tendencias', icon: Trending },
+    { id: 'trending', name: 'Tendencias', icon: TrendingUp }, // Changed from Trending to TrendingUp
     { id: 'based_on_history', name: 'Para ti', icon: History },
     { id: 'similar_interests', name: 'Relacionados', icon: Star }
   ]

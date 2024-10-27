@@ -3,31 +3,27 @@ import Layout from '../../components/Layout'
 import SEO from '../../components/SEO'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import useProtectedRoute from '../../hooks/useProtectedRoute'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Profile() {
-    const { isLoading } = useProtectedRoute()
-    const { user } = useAuth()
-  
-    if (isLoading) {
-      return (
-        <Layout>
-          <div className="container mx-auto px-4 py-8">
-            <p className="text-center">Cargando...</p>
-          </div>
-        </Layout>
-      )
-    }
-    
-  }
-
-export default function Profile() {
+  const { isLoading } = useProtectedRoute()
+  const { user } = useAuth()
   const [userData, setUserData] = useState({
     name: 'Usuario Demo',
     email: 'usuario@demo.com',
     notifications: true,
     newsletter: true
   })
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <p className="text-center">Cargando...</p>
+        </div>
+      </Layout>
+    )
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
