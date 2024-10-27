@@ -63,13 +63,13 @@ export default function CookieConsent() {
             </div>
 
             <p className="text-xs text-gray-500">
-              Al hacer clic en &apos;Aceptar todas&apos;, aceptas el almacenamiento de cookies en tu dispositivo 
+              Al hacer clic en &quot;Aceptar todas&quot;, aceptas el almacenamiento de cookies en tu dispositivo 
               para mejorar la navegación del sitio, analizar su uso y colaborar en nuestros esfuerzos de marketing. 
               Lee nuestra{' '}
               <Link href="/privacidad" className="text-blue-600 hover:text-blue-800">
-                política de privacidad
+              política de privacidad
               </Link>{' '}
-              para más información.
+             para más información.
             </p>
           </AlertDescription>
         </Alert>
