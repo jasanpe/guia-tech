@@ -1,3 +1,4 @@
+// pages/perfil/index.js
 import { useState } from 'react'
 import Layout from '../../components/Layout'
 import SEO from '../../components/SEO'
@@ -5,7 +6,7 @@ import Breadcrumbs from '../../components/Breadcrumbs'
 import useProtectedRoute from '../../hooks/useProtectedRoute'
 import { useAuth } from '../../context/AuthContext'
 
-export default function Profile() {
+const ProfilePage = () => {
   const { isLoading } = useProtectedRoute()
   const { user } = useAuth()
   const [userData, setUserData] = useState({
@@ -27,7 +28,6 @@ export default function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Aquí implementaremos la actualización del perfil
     console.log('Profile updated:', userData)
   }
 
@@ -113,3 +113,5 @@ export default function Profile() {
     </Layout>
   )
 }
+
+export default ProfilePage

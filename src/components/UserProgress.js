@@ -1,3 +1,4 @@
+// UserProgress.js
 import { useState, useCallback } from 'react'
 import { Star, Award, Target, Trophy, TrendingUp } from 'lucide-react'
 
@@ -139,7 +140,7 @@ export default function UserProgress() {
           <div>
             <h3 className="font-semibold text-lg">¡Nuevo logro desbloqueado!</h3>
             <p className="text-blue-100">
-              Has conseguido &ldquo;Cazador de Ofertas Novato&rdquo; por reportar tu primera oferta
+              Has conseguido &apos;Cazador de Ofertas Novato&apos; por reportar tu primera oferta
             </p>
             <button 
               className="mt-2 text-sm text-blue-100 hover:text-white"

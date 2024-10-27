@@ -1,3 +1,4 @@
+// pages/index.js
 import Image from "next/image"
 import localFont from "next/font/local"
 import Header from '../components/Header'
@@ -7,7 +8,7 @@ import Layout from '../components/Layout'
 import LatestArticles from '../components/LatestArticles'
 import Newsletter from '../components/Newsletter'
 import { useNotification } from '../context/NotificationContext'
-import { OfferAlert } from '../components/OfferAlert'
+import OfferAlert from '../components/OfferAlert'
 import { useCallback } from 'react'
 
 const geistSans = localFont({
@@ -22,7 +23,7 @@ const geistMono = localFont({
   weight: "100 900",
 })
 
-export default function Home() {
+const Home = () => {
   const { showNotification } = useNotification()
 
   const handleNewsletterSuccess = useCallback(() => {
@@ -74,7 +75,7 @@ export default function Home() {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {categories.map((category, index) => (
             <CategoryCard 
-              key={index} 
+              key={`category-${index}`}
               {...category} 
               className="font-geist-sans"
             />
@@ -130,8 +131,7 @@ export default function Home() {
                 </h2>
                 <p className="text-gray-600 mb-4 font-geist-sans">
                   Cada producto es sometido a pruebas exhaustivas durante al menos 2 semanas antes de publicar nuestras conclusiones.
-                </p>
-                <a href="/metodologia" className="text-blue-600 hover:text-blue-800 font-geist-sans">
+                </p> <a href="/metodologia" className="text-blue-600 hover:text-blue-800 font-geist-sans">
                   Conoce más sobre nuestro proceso →
                 </a>
               </div>
@@ -158,3 +158,5 @@ export default function Home() {
     </Layout>
   )
 }
+
+export default Home

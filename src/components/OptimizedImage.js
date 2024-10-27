@@ -54,11 +54,11 @@ export function OptimizedImage({ src, alt = '', className = '', priority = false
         ref={imgRef}
         src={src}
         alt={alt}
-        layout="fill"
-        objectFit="contain"
+        fill={true}
+        sizes="100vw"
         priority={priority}
-        className="w-full h-full object-cover"
-        onLoad={() => {
+        className={`w-full h-full object-cover ${loaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}
+        onLoadingComplete={() => {
           setLoaded(true)
           onLoad?.()
         }}

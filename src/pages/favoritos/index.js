@@ -1,10 +1,10 @@
+// pages/favoritos/index.js
 import Layout from '../../components/Layout'
 import SEO from '../../components/SEO'
 import ProductCard from '../../components/ProductCard'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import useProtectedRoute from '../../hooks/useProtectedRoute'
 
-// Mock de datos de favoritos
 const mockFavorites = [
   {
     title: "iPhone 15 Pro Max",
@@ -26,7 +26,7 @@ const mockFavorites = [
   }
 ]
 
-export default function FavoritesPage() {
+const FavoritesPage = () => {
   const { isLoading } = useProtectedRoute()
 
   if (isLoading) {
@@ -56,7 +56,7 @@ export default function FavoritesPage() {
         {mockFavorites.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockFavorites.map((product, index) => (
-              <div key={index} className="relative">
+              <div key={`favorite-${index}`} className="relative">
                 <button
                   className="absolute top-2 right-2 z-10 bg-white rounded-full p-1 shadow-md hover:bg-red-50"
                   aria-label="Eliminar de favoritos"
@@ -86,3 +86,5 @@ export default function FavoritesPage() {
     </Layout>
   )
 }
+
+export default FavoritesPage
