@@ -141,6 +141,7 @@ export default function UserProgress() {
             <p className="text-blue-100">
               Has conseguido &apos;Cazador de Ofertas Novato&apos; por reportar tu primera oferta
             </p>
+
             <button
               className="mt-2 text-sm text-blue-100 hover:text-white"
               onClick={toggleAchievements}
