@@ -48,7 +48,7 @@ export function OptimizedImage({ src, alt = '', className = '', priority = false
       {!loaded && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-lg" />
       )}
-      
+
       <Image
         {...imageProps}
         ref={imgRef}

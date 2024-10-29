@@ -1,3 +1,4 @@
+// ProductCard.js
 import { useMetrics } from '../hooks/useMetrics'
 import { useState, useEffect } from 'react'
 import { OptimizedImage } from './OptimizedImage'
@@ -13,37 +14,33 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { 
-  TrendingDown, 
-  TrendingUp, 
-  AlertTriangle, 
+import {
+  TrendingDown,
+  TrendingUp,
+  AlertTriangle,
   Bell,
   ChevronDown,
   ChevronUp,
   ExternalLink,
-  Eye,
-  MousePointerClick,
-  BadgeCheck,
   Clock,
-  LineChart
+  LineChart,
 } from 'lucide-react'
-import { Skeleton } from '@/components/ui/skeleton'  // Changed from ../ui/skeleton
-import { Badge } from '@/components/ui/badge'  // Changed from ../ui/badge
+import { Skeleton } from '@/components/ui/skeleton'
+import { Badge } from '@/components/ui/badge'
 
-// Rest of your component code stays exactly the same...
 export default function ProductCard({
   id,
   title,
   description,
   price,
   rating = 0,
-  store = "amazon",
+  store = 'amazon',
   image = null,
   position = null,
-  category = "general",
+  category = 'general',
   url = null,
   isSponsored = false,
-  availability = true
+  availability = true,
 }) {
   const { trackUserInteraction } = useMetrics()
   const { generateAffiliateLink, trackAffiliateClick, getBestPrice } = useAffiliate()
@@ -62,15 +59,15 @@ export default function ProductCard({
   useEffect(() => {
     const loadInitialData = async () => {
       if (!id) return
-      
+
       try {
         setIsLoading(true)
-        
+
         const [
           priceAnalytics,
           priceReport,
           bestPrice,
-          newAffiliateLink
+          newAffiliateLink,
         ] = await Promise.all([
           PriceMonitor.getPriceAnalytics(id),
           PriceMonitor.generatePriceReport(id),
@@ -79,34 +76,48 @@ export default function ProductCard({
             price,
             category,
             position,
-            isSponsored
-          })
+            isSponsored,
+          }),
         ])
-  
+
         setPriceData(priceReport)
         setAffiliateLink(newAffiliateLink)
-        setCompetitorPrices(bestPrice ? [bestPrice, ...priceReport?.competitors?.competitors || []] : priceReport?.competitors?.competitors)
-  
+        setCompetitorPrices(
+          bestPrice
+            ? [bestPrice, ...(priceReport?.competitors?.competitors || [])]
+            : priceReport?.competitors?.competitors
+        )
+
         await PriceMonitor.initMonitoring(id, {
           currentPrice: price,
           store,
           title,
-          category
+          category,
         })
-  
       } catch (error) {
         console.error('Error loading product data:', error)
         showNotification({
           type: 'error',
-          message: 'Error cargando datos del producto'
+          message: 'Error cargando datos del producto',
         })
       } finally {
         setIsLoading(false)
       }
     }
-  
+
     loadInitialData()
-  }, [id, price, store, title, category, position, isSponsored, generateAffiliateLink, getBestPrice, showNotification])
+  }, [
+    id,
+    price,
+    store,
+    title,
+    category,
+    position,
+    isSponsored,
+    generateAffiliateLink,
+    getBestPrice,
+    showNotification,
+  ])
 
   // Observer para tracking de visibilidad
   useEffect(() => {
@@ -114,14 +125,14 @@ export default function ProductCard({
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
-          trackUserInteraction('product_view', { 
+          trackUserInteraction('product_view', {
             productId: id,
             title,
             position: entry.boundingClientRect.top,
             store,
             category,
             price,
-            isSponsored
+            isSponsored,
           })
           observer.disconnect()
         }
@@ -132,16 +143,24 @@ export default function ProductCard({
     const element = document.querySelector(`#product-${id}`)
     if (element) observer.observe(element)
     return () => observer.disconnect()
-  }, [id, title, trackUserInteraction, store, category, price, isSponsored])
+  }, [
+    id,
+    title,
+    trackUserInteraction,
+    store,
+    category,
+    price,
+    isSponsored,
+  ])
 
   // Manejar click en el producto
   const handleProductClick = async (e) => {
     e.preventDefault()
-    
+
     if (!availability) {
       showNotification({
         type: 'warning',
-        message: 'Producto temporalmente no disponible'
+        message: 'Producto temporalmente no disponible',
       })
       return
     }
@@ -153,20 +172,19 @@ export default function ProductCard({
         category,
         position,
         isSponsored,
-        title
+        title,
       })
 
       // Abrir en nueva pestaña
       window.open(affiliateLink || url, '_blank', 'noopener,noreferrer')
-      
+
       // Actualizar estado local
       setHasInteracted(true)
-
     } catch (error) {
       console.error('Error handling product click:', error)
       showNotification({
         type: 'error',
-        message: 'Error al procesar el click'
+        message: 'Error al procesar el click',
       })
     }
   }
@@ -174,7 +192,11 @@ export default function ProductCard({
   const PriceTag = () => (
     <div className="flex flex-col">
       <div className="flex items-center gap-2">
-        <span className={`text-2xl font-bold ${availability ? 'text-blue-600' : 'text-gray-400'} font-geist-sans`}>
+        <span
+          className={`text-2xl font-bold ${
+            availability ? 'text-blue-600' : 'text-gray-400'
+          } font-geist-sans`}
+        >
           {typeof price === 'number' ? `${price.toFixed(2)}€` : price}
         </span>
         {!isLoading && availability && priceData?.analytics?.trends?.week && (
@@ -205,7 +227,8 @@ export default function ProductCard({
       {!isLoading && competitorPrices?.[0]?.price < price && (
         <span className="text-xs text-red-500 flex items-center gap-1">
           <AlertTriangle className="w-3 h-3" />
-          Mejor precio: {competitorPrices[0].price.toFixed(2)}€ en {competitorPrices[0].store}
+          Mejor precio: {competitorPrices[0].price.toFixed(2)}€ en{' '}
+          {competitorPrices[0].store}
         </span>
       )}
     </div>
@@ -222,10 +245,11 @@ export default function ProductCard({
                 <span>Histórico</span>
               </div>
               <p className="font-medium">
-                {priceData?.analytics?.stats?.lowestPrice ? 
-                  `Min: ${priceData.analytics.stats.lowestPrice.toFixed(2)}€` :
-                  'Sin datos'
-                }
+                {priceData?.analytics?.stats?.lowestPrice
+                  ? `Min: ${priceData.analytics.stats.lowestPrice.toFixed(
+                      2
+                    )}€`
+                  : 'Sin datos'}
               </p>
             </div>
           </TooltipTrigger>
@@ -242,10 +266,9 @@ export default function ProductCard({
                 <span>Tendencia</span>
               </div>
               <p className="font-medium">
-                {priceData?.analytics?.prediction ? 
-                  `${priceData.analytics.prediction.estimated.toFixed(2)}€` :
-                  'Sin predicción'
-                }
+                {priceData?.analytics?.prediction
+                  ? `${priceData.analytics.prediction.estimated.toFixed(2)}€`
+                  : 'Sin predicción'}
               </p>
             </div>
           </TooltipTrigger>
@@ -258,11 +281,13 @@ export default function ProductCard({
   )
 
   return (
-    <div 
+    <div
       id={`product-${id}`}
       className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-      } hover:shadow-xl hover:-translate-y-1 ${!availability ? 'opacity-75' : ''}`}
+      } hover:shadow-xl hover:-translate-y-1 ${
+        !availability ? 'opacity-75' : ''
+      }`}
     >
       <div className="p-4 space-y-4">
         <div className="relative h-48 bg-gray-100 rounded-lg overflow-hidden">
@@ -272,7 +297,9 @@ export default function ProductCard({
             <>
               {!availability && (
                 <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center z-10">
-                  <span className="text-white font-medium">No disponible</span>
+                  <span className="text-white font-medium">
+                    No disponible
+                  </span>
                 </div>
               )}
               <div className="absolute top-2 right-2 flex flex-col gap-1">
@@ -289,14 +316,18 @@ export default function ProductCard({
                   alt={title}
                   className="w-full h-full object-contain"
                   priority={false}
-                  onLoad={() => trackUserInteraction('product_image_loaded', { 
-                    productId: id,
-                    loadTime: performance.now()
-                  })}
-                  onError={() => trackUserInteraction('product_image_error', { 
-                    productId: id,
-                    imageUrl: image
-                  })}
+                  onLoad={() =>
+                    trackUserInteraction('product_image_loaded', {
+                      productId: id,
+                      loadTime: performance.now(),
+                    })
+                  }
+                  onError={() =>
+                    trackUserInteraction('product_image_error', {
+                      productId: id,
+                      imageUrl: image,
+                    })
+                  }
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
@@ -324,7 +355,9 @@ export default function ProductCard({
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
-                className={`w-5 h-5 ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                className={`w-5 h-5 ${
+                  star <= rating ? 'text-yellow-400' : 'text-gray-300'
+                }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -359,8 +392,8 @@ export default function ProductCard({
             onClick={handleProductClick}
             disabled={!availability}
             className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg font-geist-sans transition-all ${
-              availability 
-                ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-[1.02]' 
+              availability
+                ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-[1.02]'
                 : 'bg-gray-300 text-gray-600 cursor-not-allowed'
             }`}
           >
@@ -380,11 +413,6 @@ export default function ProductCard({
                   : 'text-gray-400 border-gray-200 cursor-not-allowed'
               }`}
             >
-              <Bell className="w-4 h-4" />
-              Alertas de precio
-            </button>
-
-            <button>
               <Bell className="w-4 h-4" />
               Alertas de precio
             </button>
@@ -410,9 +438,9 @@ export default function ProductCard({
 
         {showDetails && !isLoading && (
           <div className="space-y-6 pt-4">
-            {ProductMetrics}
-            <PriceHistory 
-              priceData={priceData} 
+            <ProductMetrics />
+            <PriceHistory
+              priceData={priceData}
               currentPrice={price}
               isLoading={isLoading}
               competitorPrices={competitorPrices}
@@ -423,11 +451,16 @@ export default function ProductCard({
                   Recomendaciones
                 </h4>
                 {priceData.recommendations.map((rec, index) => (
-                  <p key={index} className={`text-sm flex items-center gap-2 ${
-                    rec.type === 'warning' ? 'text-amber-700' :
-                    rec.type === 'alert' ? 'text-red-700' :
-                    'text-blue-700'
-                  }`}>
+                  <p
+                    key={index}
+                    className={`text-sm flex items-center gap-2 ${
+                      rec.type === 'warning'
+                        ? 'text-amber-700'
+                        : rec.type === 'alert'
+                        ? 'text-red-700'
+                        : 'text-blue-700'
+                    }`}
+                  >
                     <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                     {rec.message}
                   </p>
@@ -446,7 +479,7 @@ export default function ProductCard({
             price,
             store,
             category,
-            availability
+            availability,
           }}
           priceData={priceData}
           onAlertCreate={(alertId, conditions) => {
@@ -456,13 +489,13 @@ export default function ProductCard({
               conditions,
               store,
               category,
-              price
-            });
-            
+              price,
+            })
+
             showNotification({
               type: 'success',
-              message: 'Alerta de precio configurada correctamente'
-            });
+              message: 'Alerta de precio configurada correctamente',
+            })
           }}
         />
       </div>

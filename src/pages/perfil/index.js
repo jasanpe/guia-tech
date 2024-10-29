@@ -1,4 +1,3 @@
-// pages/perfil/index.js
 import { useState } from 'react'
 import Layout from '../../components/Layout'
 import SEO from '../../components/SEO'
@@ -33,14 +32,14 @@ const ProfilePage = () => {
 
   return (
     <Layout>
-      <SEO 
+      <SEO
         title="Mi Perfil | Guía Tech"
         description="Gestiona tu perfil y preferencias"
       />
-      
+
       <div className="container mx-auto px-4 py-8">
         <Breadcrumbs />
-        
+
         <h1 className="text-3xl font-bold text-blue-600 mb-8 font-geist-sans">
           Mi Perfil
         </h1>
@@ -54,7 +53,7 @@ const ProfilePage = () => {
               <input
                 type="text"
                 value={userData.name}
-                onChange={(e) => setUserData({...userData, name: e.target.value})}
+                onChange={(e) => setUserData({ ...userData, name: e.target.value })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
@@ -66,7 +65,7 @@ const ProfilePage = () => {
               <input
                 type="email"
                 value={userData.email}
-                onChange={(e) => setUserData({...userData, email: e.target.value})}
+                onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
@@ -77,7 +76,7 @@ const ProfilePage = () => {
                   type="checkbox"
                   id="notifications"
                   checked={userData.notifications}
-                  onChange={(e) => setUserData({...userData, notifications: e.target.checked})}
+                  onChange={(e) => setUserData({ ...userData, notifications: e.target.checked })}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label htmlFor="notifications" className="ml-2 block text-sm text-gray-700 font-geist-sans">
@@ -90,7 +89,7 @@ const ProfilePage = () => {
                   type="checkbox"
                   id="newsletter"
                   checked={userData.newsletter}
-                  onChange={(e) => setUserData({...userData, newsletter: e.target.checked})}
+                  onChange={(e) => setUserData({ ...userData, newsletter: e.target.checked })}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label htmlFor="newsletter" className="ml-2 block text-sm text-gray-700 font-geist-sans">

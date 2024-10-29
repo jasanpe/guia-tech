@@ -1,4 +1,3 @@
-// pages/index.js
 import Image from "next/image"
 import localFont from "next/font/local"
 import Header from '../components/Header'
@@ -8,7 +7,7 @@ import Layout from '../components/Layout'
 import LatestArticles from '../components/LatestArticles'
 import Newsletter from '../components/Newsletter'
 import { useNotification } from '../context/NotificationContext'
-import OfferAlert from '../components/OfferAlert'
+import OfferAlert from '../components/OfferAlert' // Importamos OfferAlert
 import { useCallback } from 'react'
 
 const geistSans = localFont({
@@ -57,7 +56,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <SEO 
+      <SEO
         title="Guía Tech - Reviews y Análisis de Tecnología"
         description="Tu fuente confiable de análisis tecnológicos, comparativas y guías de compra para tomar las mejores decisiones."
         keywords="reviews tecnología, comparativas tech, guías de compra, análisis gadgets"
@@ -74,9 +73,9 @@ const Home = () => {
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {categories.map((category, index) => (
-            <CategoryCard 
+            <CategoryCard
               key={`category-${index}`}
-              {...category} 
+              {...category}
               className="font-geist-sans"
             />
           ))}
@@ -107,19 +106,31 @@ const Home = () => {
                 <ul className="space-y-3">
                   <li className="flex items-center text-gray-600 font-geist-sans">
                     <svg className="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Análisis imparciales y detallados
                   </li>
                   <li className="flex items-center text-gray-600 font-geist-sans">
                     <svg className="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Comparativas exhaustivas
                   </li>
                   <li className="flex items-center text-gray-600 font-geist-sans">
                     <svg className="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Actualizaciones constantes
                   </li>
@@ -131,8 +142,9 @@ const Home = () => {
                 </h2>
                 <p className="text-gray-600 mb-4 font-geist-sans">
                   Cada producto es sometido a pruebas exhaustivas durante al menos 2 semanas antes de publicar nuestras conclusiones.
-                </p> <a href="/metodologia" className="text-blue-600 hover:text-blue-800 font-geist-sans">
-                  Conoce más sobre nuestro proceso →
+                </p>
+                <a href="/metodologia" className="text-blue-600 hover:text-blue-800 font-geist-sans">
+                  Conoce más sobre nuestro proceso &rarr;
                 </a>
               </div>
             </div>

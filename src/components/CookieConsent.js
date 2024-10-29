@@ -1,4 +1,3 @@
-// CookieConsent.js
 import { useState, useEffect } from 'react'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import Link from 'next/link'
@@ -36,11 +35,11 @@ export default function CookieConsent() {
           </AlertTitle>
           <AlertDescription className="space-y-4">
             <p className="text-gray-600">
-              Utilizamos cookies y tecnologías similares para mejorar tu experiencia, mostrar contenido relevante 
-              y analizar el tráfico. También compartimos información sobre tu uso del sitio con nuestros partners 
+              Utilizamos cookies y tecnologías similares para mejorar tu experiencia, mostrar contenido relevante
+              y analizar el tráfico. También compartimos información sobre tu uso del sitio con nuestros partners
               de análisis y afiliados.
             </p>
-            
+
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={acceptCookies}
@@ -63,13 +62,13 @@ export default function CookieConsent() {
             </div>
 
             <p className="text-xs text-gray-500">
-              Al hacer clic en &quot;Aceptar todas&quot;, aceptas el almacenamiento de cookies en tu dispositivo 
-              para mejorar la navegación del sitio, analizar su uso y colaborar en nuestros esfuerzos de marketing. 
+              Al hacer clic en &quot;Aceptar todas&quot;, aceptas el almacenamiento de cookies en tu dispositivo
+              para mejorar la navegación del sitio, analizar su uso y colaborar en nuestros esfuerzos de marketing.
               Lee nuestra{' '}
               <Link href="/privacidad" className="text-blue-600 hover:text-blue-800">
-              política de privacidad
+                política de privacidad
               </Link>{' '}
-             para más información.
+              para más información.
             </p>
           </AlertDescription>
         </Alert>

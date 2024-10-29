@@ -1,4 +1,3 @@
-// UserProgress.js
 import { useState, useCallback } from 'react'
 import { Star, Award, Target, Trophy, TrendingUp } from 'lucide-react'
 
@@ -142,11 +141,11 @@ export default function UserProgress() {
             <p className="text-blue-100">
               Has conseguido &apos;Cazador de Ofertas Novato&apos; por reportar tu primera oferta
             </p>
-            <button 
+            <button
               className="mt-2 text-sm text-blue-100 hover:text-white"
               onClick={toggleAchievements}
             >
-              Ver todos los logros →
+              Ver todos los logros &rarr;
             </button>
           </div>
         </div>
@@ -154,7 +153,7 @@ export default function UserProgress() {
 
       {/* Achievements */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-        {/* ... Resto del código de achievements igual ... */}
+        {/* Aquí puedes continuar con el código de los logros */}
       </div>
     </div>
   )

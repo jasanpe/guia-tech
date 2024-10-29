@@ -12,7 +12,7 @@ export default function useDataFetching(key, fetchFn, options = {}) {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true)
-      
+
       // Intentar obtener datos del caché
       const cachedData = cache.get(key)
       if (cachedData) {
@@ -34,7 +34,7 @@ export default function useDataFetching(key, fetchFn, options = {}) {
 
   useEffect(() => {
     fetchData()
-  }, [fetchData]) // Elimina el spread operator y solo usa fetchData
+  }, [fetchData, ...deps]) // Agregamos fetchData y deps al array de dependencias
 
   return { data, loading, error }
 }
