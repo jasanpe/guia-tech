@@ -3,16 +3,21 @@ import Footer from './Footer'
 import CookieConsent from './CookieConsent'
 import localFont from "next/font/local"
 
+
 const geistSans = localFont({
-  src: "../pages/fonts/GeistVF.woff",  // Cambiado a la ruta correcta
-  variable: "--font-geist-sans",
-  weight: "100 900",
+  src: [
+    { path: "../pages/fonts/GeistVF.woff", weight: "100 900" },
+  ],
+  variable: "--font-geist-sans"
 })
 
+
+
 const geistMono = localFont({
-  src: "../pages/fonts/GeistMonoVF.woff",  // Cambiado a la ruta correcta
-  variable: "--font-geist-mono",
-  weight: "100 900",
+  src: [
+    { path: "../pages/fonts/GeistMonoVF.woff", weight: "100 900" },
+  ],
+  variable: "--font-geist-mono"
 })
 
 export default function Layout({ children }) {
@@ -27,3 +32,7 @@ export default function Layout({ children }) {
     </div>
   )
 }
+
+
+
+
