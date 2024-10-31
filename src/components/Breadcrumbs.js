@@ -28,7 +28,7 @@ export default function Breadcrumbs() {
               <span className="text-gray-600">{item.label}</span>
             ) : (
               <Link 
-                href={item.href}
+                href={item?.href || '/'} // Añadimos el operador opcional y un valor por defecto
                 className="text-blue-600 hover:text-blue-800"
               >
                 {item.label}

@@ -1,33 +1,40 @@
-import { getCLS, getFID, getLCP, getFCP, getTTFB } from 'web-vitals'
-
 export class Metrics {
-    static sessionStart = Date.now()
-  
-    static async trackMetric(name, value, metadata = {}) {
-      try {
-        const metric = {
-          name,
-          value,
-          timestamp: Date.now(),
-          sessionDuration: Date.now() - this.sessionStart,
-          ...metadata
-        }
-  
-        // Aquí implementaremos el envío real a un servicio de métricas
-        console.log('[Metrics]', metric)
-      } catch (error) {
-        console.error('[Metrics] Error:', error)
-      }
-    }
-  
-    static trackPerformance() {
-      if (typeof window === 'undefined') return
-  
-      // Métricas web vitals
-      const { getLCP, getFID, getCLS } = require('web-vitals')
-  
-      getLCP(metric => this.trackMetric('LCP', metric.value))
-      getFID(metric => this.trackMetric('FID', metric.value))
-      getCLS(metric => this.trackMetric('CLS', metric.value))
+  static sessionStart = Date.now();
+  static defaultSettings = {}; // Configuración por defecto
+
+  static restoreDefaultSettings() {
+    // Implementación del método
+    Object.assign(this, this.defaultSettings);
+  }
+
+  static async trackMetric(name, value, metadata = {}) {
+    try {
+      const metric = {
+        name,
+        value,
+        timestamp: Date.now(),
+        sessionDuration: Date.now() - this.sessionStart,
+        ...metadata,
+      };
+      console.log('[Metrics]', metric);
+      // Aquí puedes enviar las métricas a tu servicio de monitoreo
+    } catch (error) {
+      console.error('[Metrics] Error:', error);
     }
   }
+
+  static trackPerformance() {
+    if (typeof window === 'undefined') return;
+
+    // Importación dinámica de web-vitals
+    import('web-vitals')
+      .then(({ onLCP, onFID, onCLS }) => {
+        onLCP((metric) => this.trackMetric('LCP', metric.value));
+        onFID((metric) => this.trackMetric('FID', metric.value));
+        onCLS((metric) => this.trackMetric('CLS', metric.value));
+      })
+      .catch((error) => {
+        console.error('[Metrics] Error importing web-vitals:', error);
+      });
+  }
+}

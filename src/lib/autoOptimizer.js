@@ -10,6 +10,24 @@ export class AutoOptimizer {
     CRITICAL: 'critical'
   }
 
+  static defaultSettings = {
+    // Define aquí tus configuraciones por defecto
+    animations: true,
+    prefetching: true,
+    imageQuality: 'high'
+  };
+
+  static restoreDefaultSettings() {
+    // Restaura las configuraciones por defecto
+    document.body.classList.remove('reduce-motion');
+    this.optimizeImages();
+    ResourceLoader.resetMaxConcurrentRequests();
+    // Restaura otras configuraciones según sea necesario
+  }
+  
+  static enablePrefetching() {
+    ResourceLoader.enablePrefetching();
+  }
   static currentLevel = 'low'
   static autoOptimizing = false
 
@@ -70,6 +88,7 @@ export class AutoOptimizer {
   }
 
   static applyHighOptimizations() {
+    ResourceLoader.setMaxConcurrentRequests(2)
     this.disableNonEssentialAnimations()
     this.reduceCacheSize()
     this.pauseNonEssentialNetworkRequests()
@@ -77,6 +96,7 @@ export class AutoOptimizer {
   }
 
   static applyMediumOptimizations() {
+    ResourceLoader.setMaxConcurrentRequests(4)
     this.reduceAnimationQuality()
     this.optimizeImageQuality()
     this.limitConcurrentRequests()
@@ -168,6 +188,10 @@ export class AutoOptimizer {
       rect.bottom <= window.innerHeight &&
       rect.right <= window.innerWidth
     )
+  }
+
+  static enablePrefetching() {
+    ResourceLoader.enablePrefetching()
   }
 
   static optimizeForConnection() {

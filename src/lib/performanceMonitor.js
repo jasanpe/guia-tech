@@ -1,26 +1,26 @@
 export class PerformanceMonitor {
-    static metrics = {
-      FPS: new Array(60).fill(0),
-      memory: new Array(60).fill(0),
-      networkRequests: new Map(),
-      interactions: [],
-      errors: []
-    }
-  
-    static thresholds = {
-      FPS: 30,
-      memoryUsage: 0.8,
-      loadTime: 3000,
-      interactionDelay: 100
-    }
-  
-    static init() {
-      if (typeof window === 'undefined') return
-  
-      this.startMonitoring()
-      this.setupEventListeners()
-      this.monitorNetworkRequests()
-    }
+  static metrics = {
+    FPS: new Array(60).fill(0),
+    memory: new Array(60).fill(0),
+    networkRequests: new Map(),
+    interactions: [],
+    errors: []
+  };
+
+  static thresholds = {
+    FPS: 30,
+    memoryUsage: 0.8,
+    loadTime: 3000,
+    interactionDelay: 100
+  };
+
+  static init() {
+    if (typeof window === 'undefined') return;
+
+    this.startMonitoring();
+    this.setupEventListeners();
+    this.monitorNetworkRequests();
+  }
   
     static startMonitoring() {
       let lastTime = performance.now()
@@ -151,6 +151,50 @@ export class PerformanceMonitor {
       console.error('Application Error:', errorData)
       // Aquí implementaremos el envío a un servicio de monitoreo
     }
+
+    static reportMetric(name, data) {
+      try {
+        const metricData = {
+          name,
+          value: data.value,
+          timestamp: Date.now(),
+          context: {
+            page: typeof window !== 'undefined' ? window.location.pathname : null, // <-- Corrección
+            deviceType: this.getDeviceType(), // <-- Asegúrate de que esta función esté definida
+            ...data.context
+          }
+        };
+    
+        // ... (lógica de categorización de métricas - sin cambios)
+    
+        // Enviar a Analytics
+        if (typeof window !== 'undefined' && window.gtag) { // <-- Corrección
+          window.gtag('event', name, {
+            ...metricData,
+            metric_category: this.getMetricCategory(name)
+          });
+        }
+    
+    
+      } catch (error) {
+        console.error("Error en reportMetric:", error);
+        // Manejo adicional de errores, como enviar el error a un servicio de logging
+      }
+    }
+    
+    static getDeviceType() { // <-- Función añadida
+      if (typeof window === 'undefined') return 'server';
+  
+      const ua = navigator.userAgent;
+      if (/Mobile|Android|iP(hone|od|ad)/i.test(ua)) {
+        return 'mobile';
+      } else if (/Tablet|iPad/i.test(ua)) {
+        return 'tablet';     } else {
+        return 'desktop';
+      }
+    }
+    
+    // ... Implementa las funciones faltantes: getDeviceType, calculateEngagementTime, etc.
   
     static getMetrics() {
       return {

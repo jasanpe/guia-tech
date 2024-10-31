@@ -13,6 +13,7 @@ import '../styles/globals.css'
 import { AuthProvider } from '../context/AuthContext'
 import { NotificationProvider } from '../context/NotificationContext'
 import { TooltipProvider } from '../components/ui/tooltip'
+import Layout from '../components/Layout'
 
 export default function App({ Component, pageProps }) {
   const { trackEvent } = useAnalytics()
@@ -118,10 +119,12 @@ export default function App({ Component, pageProps }) {
       <AuthProvider>
         <NotificationProvider>
           <TooltipProvider>
-            <div className="app-container min-h-screen bg-gray-50">
-              <Component {...pageProps} />
-              <div id="portal-root" />
-            </div>
+            <Layout>  {/* Envuelve todo con Layout */}
+              <div className="min-h-screen bg-background text-foreground">
+                <Component {...pageProps} />
+                <div id="portal-root" />
+              </div>
+            </Layout>
           </TooltipProvider>
         </NotificationProvider>
       </AuthProvider>

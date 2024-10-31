@@ -39,17 +39,17 @@ export default function RelatedArticles({ currentSlug, type }) {
     <aside className="mt-12 p-6 bg-gray-50 rounded-lg">
       <h2 className="text-xl font-bold mb-6 font-geist-sans">Artículos Relacionados</h2>
       <div className="grid gap-6">
-        {relatedArticles.map((article, index) => (
+        {relatedArticles?.map((article, index) => (
           <article key={index} className="bg-white p-4 rounded-lg shadow-sm">
             <h3 className="font-semibold mb-2 font-geist-sans">
               <Link 
-                href={`/${type}/${article.slug}`}
+                href={type && article?.slug ? `/${type}/${article.slug}` : '/'}
                 className="text-blue-600 hover:text-blue-800"
               >
-                {article.title}
+                {article?.title || 'Artículo relacionado'}
               </Link>
             </h3>
-            <p className="text-sm text-gray-600 font-geist-sans">{article.excerpt}</p>
+            <p className="text-sm text-gray-600 font-geist-sans">{article?.excerpt}</p>
           </article>
         ))}
       </div>
