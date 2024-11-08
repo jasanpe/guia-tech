@@ -1,19 +1,20 @@
-// ProductCard.js
-import { useMetrics } from '../hooks/useMetrics'
-import { useState, useEffect } from 'react'
-import { OptimizedImage } from './OptimizedImage'
-import { useMedia } from '../hooks/useMedia'
-import { PriceAlertDialog } from './PriceAlertDialog'
-import { PriceHistory } from './PriceHistory'
-import { PriceMonitor } from '../lib/priceMonitor'
-import { useAffiliate } from '../hooks/useAffiliate'
-import { useNotification } from '../context/NotificationContext'
+//ProductCard.js
+import { useMetrics } from '../hooks/useMetrics';
+import { useState, useEffect } from 'react';
+import { OptimizedImage } from './OptimizedImage';
+import { useMedia } from '../hooks/useMedia';
+import { PriceAlertDialog } from './PriceAlertDialog';
+import { PriceHistory } from './PriceHistory';
+import { PriceMonitor } from '../lib/priceMonitor';
+import { useAffiliate } from '../hooks/useAffiliate';
+import { useNotification } from '../context/NotificationContext';
+import { Camera } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
+} from '@/components/ui/tooltip';
 import {
   TrendingDown,
   TrendingUp,
@@ -24,9 +25,9 @@ import {
   ExternalLink,
   Clock,
   LineChart,
-} from 'lucide-react'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Badge } from '@/components/ui/badge'
+} from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 
 export default function ProductCard({
   id,
@@ -34,34 +35,39 @@ export default function ProductCard({
   description,
   price,
   rating = 0,
-  store = 'amazon',
+  storeId = 'amazon',
+  store = 'Amazon',
   image = null,
   position = null,
   category = 'general',
   url = null,
   isSponsored = false,
   availability = true,
+  originalPrice,
 }) {
-  const { trackUserInteraction } = useMetrics()
-  const { generateAffiliateLink, trackAffiliateClick, getBestPrice } = useAffiliate()
-  const { showNotification } = useNotification()
-  const [isVisible, setIsVisible] = useState(false)
-  const [hasInteracted, setHasInteracted] = useState(false)
-  const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false)
-  const { url: optimizedImageUrl } = useMedia(image)
-  const [priceData, setPriceData] = useState(null)
-  const [showDetails, setShowDetails] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [affiliateLink, setAffiliateLink] = useState(null)
-  const [competitorPrices, setCompetitorPrices] = useState(null)
+  const { trackUserInteraction } = useMetrics();
+  const { generateAffiliateLink, trackAffiliateClick, getBestPrice } =
+    useAffiliate();
+  const { showNotification } = useNotification();
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false);
+  const { url: optimizedImageUrl } = useMedia(image);
+  const [priceData, setPriceData] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [affiliateLink, setAffiliateLink] = useState(null);
+  const [competitorPrices, setCompetitorPrices] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Cargar datos iniciales
   useEffect(() => {
     const loadInitialData = async () => {
-      if (!id) return
+      if (!id) return;
 
       try {
-        setIsLoading(true)
+        setIsLoading(true);
+
+        const productId = id.includes('-') ? id.split('-')[0] : id;
 
         const [
           priceAnalytics,
@@ -69,125 +75,128 @@ export default function ProductCard({
           bestPrice,
           newAffiliateLink,
         ] = await Promise.all([
-          PriceMonitor.getPriceAnalytics(id),
-          PriceMonitor.generatePriceReport(id),
-          getBestPrice(id),
-          generateAffiliateLink(id, store, {
+          PriceMonitor.getPriceAnalytics(productId),
+          PriceMonitor.generatePriceReport(productId),
+          getBestPrice(productId),
+          generateAffiliateLink(productId, storeId, {
             price,
             category,
             position,
             isSponsored,
+            campaign: 'product_card',
           }),
-        ])
+        ]);
 
-        setPriceData(priceReport)
-        setAffiliateLink(newAffiliateLink)
+        setPriceData(priceReport);
+        setAffiliateLink(newAffiliateLink || url);
         setCompetitorPrices(
           bestPrice
             ? [bestPrice, ...(priceReport?.competitors?.competitors || [])]
             : priceReport?.competitors?.competitors
-        )
+        );
 
-        await PriceMonitor.initMonitoring(id, {
+        await PriceMonitor.initMonitoring(productId, {
           currentPrice: price,
-          store,
+          storeId,
           title,
           category,
-        })
+        });
       } catch (error) {
-        console.error('Error loading product data:', error)
+        console.error('Error loading product data:', error);
+        setAffiliateLink(url);
         showNotification({
           type: 'error',
           message: 'Error cargando datos del producto',
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadInitialData()
+    loadInitialData();
+    // Eliminamos las funciones inestables del array de dependencias
   }, [
     id,
     price,
-    store,
+    storeId,
     title,
     category,
     position,
     isSponsored,
-    generateAffiliateLink,
-    getBestPrice,
-    showNotification,
-  ])
+    url,
+  ]);
 
-  // Observer para tracking de visibilidad
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setIsVisible(true);
           trackUserInteraction('product_view', {
             productId: id,
             title,
             position: entry.boundingClientRect.top,
+            storeId,
             store,
             category,
             price,
             isSponsored,
-          })
-          observer.disconnect()
+          });
+          observer.disconnect();
         }
       },
       { threshold: 0.1, rootMargin: '50px' }
-    )
+    );
 
-    const element = document.querySelector(`#product-${id}`)
-    if (element) observer.observe(element)
-    return () => observer.disconnect()
+    const element = document.querySelector(`#product-${id}`);
+    if (element) observer.observe(element);
+    return () => observer.disconnect();
   }, [
     id,
     title,
     trackUserInteraction,
+    storeId,
     store,
     category,
     price,
     isSponsored,
-  ])
+  ]);
 
-  // Manejar click en el producto
   const handleProductClick = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!availability) {
       showNotification({
         type: 'warning',
         message: 'Producto temporalmente no disponible',
-      })
-      return
+      });
+      return;
     }
 
     try {
-      // Trackear el click
-      await trackAffiliateClick(id, store, {
+      await trackAffiliateClick(id, storeId, {
         price,
         category,
         position,
         isSponsored,
         title,
-      })
+        campaign: 'product_card',
+        source: window.location.pathname,
+      });
 
-      // Abrir en nueva pestaña
-      window.open(affiliateLink || url, '_blank', 'noopener,noreferrer')
-
-      // Actualizar estado local
-      setHasInteracted(true)
+      window.open(affiliateLink || url, '_blank', 'noopener,noreferrer');
+      setHasInteracted(true);
     } catch (error) {
-      console.error('Error handling product click:', error)
-      showNotification({
-        type: 'error',
-        message: 'Error al procesar el click',
-      })
+      console.error('Error handling product click:', error);
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        showNotification({
+          type: 'error',
+          message: 'Error al procesar el click',
+        });
+      }
     }
-  }
+  };
 
   const PriceTag = () => (
     <div className="flex flex-col">
@@ -232,7 +241,7 @@ export default function ProductCard({
         </span>
       )}
     </div>
-  )
+  );
 
   const ProductMetrics = () => (
     <div className="grid grid-cols-2 gap-4 bg-gray-50 p-3 rounded-lg">
@@ -246,9 +255,7 @@ export default function ProductCard({
               </div>
               <p className="font-medium">
                 {priceData?.analytics?.stats?.lowestPrice
-                  ? `Min: ${priceData.analytics.stats.lowestPrice.toFixed(
-                      2
-                    )}€`
+                  ? `Min: ${priceData.analytics.stats.lowestPrice.toFixed(2)}€`
                   : 'Sin datos'}
               </p>
             </div>
@@ -278,7 +285,7 @@ export default function ProductCard({
         </Tooltip>
       </TooltipProvider>
     </div>
-  )
+  );
 
   return (
     <div
@@ -477,6 +484,7 @@ export default function ProductCard({
             id,
             title,
             price,
+            storeId,
             store,
             category,
             availability,
@@ -487,18 +495,19 @@ export default function ProductCard({
               productId: id,
               alertId,
               conditions,
+              storeId,
               store,
               category,
               price,
-            })
+            });
 
             showNotification({
               type: 'success',
               message: 'Alerta de precio configurada correctamente',
-            })
+            });
           }}
         />
       </div>
     </div>
-  )
+  );
 }

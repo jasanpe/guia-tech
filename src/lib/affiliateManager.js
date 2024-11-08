@@ -120,4 +120,99 @@ export class AffiliateManager {
         return { total: 0, byStore: {}, lastDay: 0 }
       }
     }
+  
+
+  static getCommissionRate(storeId, category) {
+    // Tasas de comisión por tienda y categoría
+    const rates = {
+      amazon: {
+        smartphones: 3,
+        audio: 4,
+        computers: 2.5,
+        default: 3
+      },
+      pccomponentes: {
+        smartphones: 2,
+        audio: 3,
+        computers: 4,
+        default: 2.5
+      },
+      aliexpress: {
+        default: 5
+      }
+    }
+
+    return rates[storeId]?.[category] || rates[storeId]?.default || 0
   }
+
+  static validateProduct(productId, storeId) {
+    // Por ahora retornamos true, implementar validación real cuando tengamos APIs
+    return Promise.resolve(true)
+  }
+
+  static storeAttributionData(data) {
+    try {
+      const attributions = JSON.parse(localStorage.getItem('affiliate_attributions') || '[]')
+      attributions.push({
+        ...data,
+        timestamp: Date.now()
+      })
+      
+      // Mantener solo las últimas 50 atribuciones
+      if (attributions.length > 50) attributions.shift()
+      
+      localStorage.setItem('affiliate_attributions', JSON.stringify(attributions))
+    } catch (error) {
+      console.error('Error storing attribution data:', error)
+    }
+  }
+
+  static isValidStore(storeId) {
+    return !!this.stores[storeId]
+  }
+
+  static formatUrl(url, options = {}) {
+    try {
+      const urlObj = new URL(url)
+      Object.entries(options).forEach(([key, value]) => {
+        if (value) urlObj.searchParams.append(key, value)
+      })
+      return urlObj.toString()
+    } catch {
+      return url
+    }
+  }
+
+  static async getPriceHistory(productId, storeId) {
+    // Mock de historial de precios por ahora
+    return Promise.resolve([
+      { date: Date.now() - 86400000 * 30, price: 1499 },
+      { date: Date.now() - 86400000 * 20, price: 1399 },
+      { date: Date.now() - 86400000 * 10, price: 1299 },
+      { date: Date.now(), price: 1299 }
+    ])
+  }
+
+  static async checkAvailability(productId, storeId) {
+    // Mock de disponibilidad por ahora
+    return Promise.resolve({
+      available: true,
+      stock: 5,
+      shipping: "Envío gratis"
+    })
+  }
+
+  static async getAllStorePrices(productId) {
+    // Mock de precios por tienda
+    return Promise.resolve([
+      { store: 'amazon', price: 1299, available: true },
+      { store: 'pccomponentes', price: 1349, available: true },
+      { store: 'aliexpress', price: 1199, available: false }
+    ])
+  }
+
+  static calculateCommission(price, storeId, category) {
+    const rate = this.getCommissionRate(storeId, category)
+    return (price * rate) / 100
+  }
+}
